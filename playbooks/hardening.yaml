@@ -1,0 +1,41 @@
+---
+- hosts: linux
+  become: true
+
+  tasks:
+
+  - name: Update al installed packages in CentOS
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
+    notify: Reboot servers
+    when: ansible_os_family == "RedHat"
+
+  - name: Update al installed packages in Ubuntu
+    ansible.builtin.apt:
+      name: "*"
+      state: latest
+      update_cache: true
+    notify: Reboot servers
+    when: ansible_os_family == "Debian"
+
+  - name: Deshabilitar login root
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin'
+      line: 'PermitRootLogin no'
+      state: present
+      backup: true
+    notify: Reiniciar SSH       
+
+  handlers:
+
+  - name: Reboot servers
+    ansible.builtin.reboot:
+
+  - name: Reiniciar SSH
+    ansible.builtin.service:
+      name: "{{ 'ssh' if ansible_facts['os_family'] == 'Debian' else 'sshd' }}"
+      state: restarted    
+
+      
