@@ -1,0 +1,1 @@
+shared  -fstype=nfs4  192.168.10.11:/srv/nfs/shared
