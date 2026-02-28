@@ -16,7 +16,7 @@
 
   - name: Add nfs.autofs to auto.master.d
     ansible.builtin.copy:
-      src: ../file/nfs-autofs
+      src: ../file/nfs.autofs
       dest: /etc/auto.master.d/nfs.autofs
       owner: root
       mode: '0644'  
