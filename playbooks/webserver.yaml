@@ -6,7 +6,7 @@
 
   - name: Copy webserver unit file
     ansible.builtin.copy:
-      src: ../files/shared-http.service
+      src: ../file/shared-http.service
       dest: /etc/systemd/system/shared-http.service
       owner: root
       group: root
