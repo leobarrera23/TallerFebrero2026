@@ -30,7 +30,7 @@ Red utilizada: `192.168.10.0/24`
 ## 3. Diagrama Simplificado
 
             192.168.10.0/24
-
+```bash
 ┌─────────────────────────────────────────┐
 │ │
 │ bastion (Ansible) │
@@ -49,7 +49,7 @@ Red utilizada: `192.168.10.0/24`
  │
 │ │
 └─────────────────────────────────────────┘
-
+```
 
 ---
 
@@ -62,36 +62,38 @@ Red utilizada: `192.168.10.0/24`
 
 Instalar colecciones necesarias:
 
+## 5. Estructura del Proyecto
 ```bash
-ansible-galaxy collection install -r collections/requirements.yaml
-5. Estructura del Proyecto
-TallerFebrero2026/
-│
-├── inventories/
-│   └── hosts.ini
-│
-├── playbooks/
-│   ├── nfs-server.yaml
-│   ├── nfsclient.yaml
-│   ├── ubuntu-ufw.yaml
-│   └── webserver.yaml
-│
-├── file/
-│   ├── auto.nfs
-│   ├── nfs.autofs
-│   └── shared-http.service
-│
-├── collections/
-│   └── requirements.yaml
-│
-└── site.yaml
-6. Ejecución
-6.1 Ejecución completa de la infraestructura
+.
+├── collections
+│   └── requirements.yaml
+├── file
+│   ├── auto.nfs
+│   ├── nfs.autofs
+│   └── shared-http.service
+├── inventories
+│   ├── group_vars
+│   │   └── linux.yaml
+│   └── hosts.ini
+├── LICENSE
+├── playbooks
+│   ├── hardening.yaml
+│   ├── nfsclient.yaml
+│   ├── nfs-server.yaml
+│   ├── ubuntu-ufw.yaml
+│   └── webserver.yaml
+├── README.md
+├── site.yaml
+└── templates
+    └── README-NFS.j2
+```
+## 6. Ejecución
+## 6.1 Ejecución completa de la infraestructura
 
 Para desplegar toda la infraestructura desde cero:
-
+```bash
 ansible-playbook -i inventories/hosts.ini site.yaml --ask-become-pass
-
+```
 Este playbook maestro ejecuta en orden:
 
 Configuración del servidor NFS (centos01)
@@ -109,8 +111,9 @@ Los playbooks fueron diseñados para ser idempotentes y ejecutables en servidore
 En caso de requerir pruebas parciales o despliegue por etapas, los playbooks pueden ejecutarse individualmente.
 
 a) NFS Server (centos01)
+```bash
 ansible-playbook -i inventories/hosts.ini playbooks/nfs-server.yaml --ask-become-pass
-
+```
 Configura:
 
 Instalación de nfs-utils
@@ -124,8 +127,9 @@ Configuración de firewall (firewalld)
 Servicio nfs-server habilitado y activo
 
 b) Cliente NFS con autofs (ubuntu01)
+```bash
 ansible-playbook -i inventories/hosts.ini playbooks/nfsclient.yaml --ask-become-pass
-
+```
 Configura:
 
 Instalación de autofs, nfs-common, python3
@@ -139,8 +143,9 @@ Timeout configurado
 Servicio autofs habilitado y activo
 
 c) Firewall Ubuntu (ubuntu01)
+```bash
 ansible-playbook -i inventories/hosts.ini playbooks/ubuntu-ufw.yaml --ask-become-pass
-
+```
 Configura:
 
 Política default deny incoming
@@ -152,8 +157,9 @@ Allow SSH
 Allow TCP 8080
 
 d) Servicio Web systemd (ubuntu01)
+```bash
 ansible-playbook -i inventories/hosts.ini playbooks/webserver.yaml --ask-become-pass
-
+```
 Configura:
 
 Unit file /etc/systemd/system/shared-http.service
