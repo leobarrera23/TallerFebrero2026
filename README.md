@@ -183,6 +183,8 @@ Red Hat Enterprise Linux Documentation – NFS
 systemd documentation
 https://www.freedesktop.org/software/systemd/man/systemd.service.html
 
+IA utilizada: chatgpt 5.2
+
 Manuales del sistema:
 
 man nfs
